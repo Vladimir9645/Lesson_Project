@@ -4,7 +4,7 @@ class Product:
     def __init__(self, name: str, description: str, price: float, quantity: int):
         self.name = name
         self.description = description
-        self._price = price  # Приватный атрибут цены
+        self.__price = price  # Приватный атрибут цены
         self.quantity = quantity
         # Увеличиваем счётчик при создании объекта
         Product.product_count += 1
@@ -12,13 +12,13 @@ class Product:
     @property
     def price(self) -> float:
         """Геттер для приватного атрибута цены"""
-        return self._price
+        return self.__price
 
     @price.setter
     def price(self, value: float):
         """Сеттер для атрибута цены с проверкой на положительное значение"""
         if value > 0:
-            self._price = value
+            self.__price = value
         else:
             print("Цена не должна быть нулевая или отрицательная")
 
@@ -35,6 +35,7 @@ class Product:
 
 class Category:
     category_count = 0  # Атрибут класса: общее число категорий
+    product_count = 0  # Атрибут класса: счётчик продуктов во всех категориях
 
     def __init__(self, name: str, description: str, products: list[Product]):
         self.name = name
@@ -42,6 +43,8 @@ class Category:
         self.__products = products  # Приватный атрибут списка товаров
         # Увеличиваем счётчик при создании объекта
         Category.category_count += 1
+        # Увеличиваем общий счетчик продуктов на кол-ло переданных продуктов
+        Category.product_count += len(products)
 
     @property
     def products(self) -> str:
@@ -57,7 +60,7 @@ class Category:
         """Метод для добавления продукта в приватный атрибут __products.
         Прибавляет 1 к счётчику продуктов класса Product."""
         self.__products.append(product)
-        Product.product_count += 1  # Увеличиваем общий счётчик продуктов
+        Category.product_count += 1  # Увеличиваем общий счётчик продуктов
 
 
 
@@ -97,7 +100,7 @@ if __name__ == "__main__":
     print(category1.products)
     category1.add_product(product4)
     print(category1.products)
-    print(Product.product_count)
+    print(Category.product_count)
 
     new_product = Product.new_product(
         {"name": "Samsung Galaxy S23 Ultra",
