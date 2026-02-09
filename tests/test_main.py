@@ -1,51 +1,91 @@
-from src.main import Product, Category
+import pytest
+from main import Product, Category  # замените yourmodule на имя вашего файла
 
 
 class TestProduct:
-    def test_product_initialization(self):
-        """Проверка создания экземпляра Product."""
-        product = Product("Test Phone", "A test product", 10000.0, 5)
+    def test_product_creation(self):
+        """Тест создания продукта с корректными данными"""
+        product = Product("Test Phone", "Test description", 1000.0, 10)
         assert product.name == "Test Phone"
-        assert product.description == "A test product"
-        assert product.price == 10000.0
-        assert product.quantity == 5
+        assert product.description == "Test description"
+        assert product.price == 1000.0
+        assert product.quantity == 10
 
-    def test_product_count_increments(self):
-        """Счётчик product_count увеличивается при создании нового Product."""
-        # Исходное значение
+    def test_price_getter(self):
+        """Тест геттера цены"""
+        product = Product("Test", "Desc", 500.0, 5)
+        assert product.price == 500.0
+
+    def test_price_setter_positive(self):
+        """Тест установки положительной цены"""
+        product = Product("Test", "Desc", 500.0, 5)
+        product.price = 600.0
+        assert product.price == 600.0
+
+    def test_price_setter_negative(self, capsys):
+        """Тест установки отрицательной цены"""
+        product = Product("Test", "Desc", 500.0, 5)
+        product.price = -100.0
+        captured = capsys.readouterr()
+        assert "Цена не должна быть нулевая или отрицательная" in captured.out
+        assert product.price == 500.0  # цена не изменилась
+
+    def test_price_setter_zero(self, capsys):
+        """Тест установки нулевой цены"""
+        product = Product("Test", "Desc", 500.0, 5)
+        product.price = 0
+        captured = capsys.readouterr()
+        assert "Цена не должна быть нулевая или отрицательная" in captured.out
+        assert product.price == 500.0  # цена не изменилась
+
+    def test_new_product_classmethod(self):
+        """Тест класс‑метода new_product"""
+        product_data = {
+            "name": "Test Product",
+            "description": "Test desc",
+            "price": 700.0,
+            "quantity": 3,
+        }
+        product = Product.new_product(product_data)
+        assert isinstance(product, Product)
+        assert product.name == "Test Product"
+        assert product.price == 700.0
+
+    def test_product_count_increment(self):
+        """Тест увеличения счётчика продуктов"""
         initial_count = Product.product_count
-
-        # Создаём продукт
-        product = Product("Another Phone", "Second test", 8000.0, 3)
-
-        # Проверяем, что счётчик вырос на 1
+        Product("Test", "Desc", 100.0, 1)
         assert Product.product_count == initial_count + 1
 
 
 class TestCategory:
-    def test_category_initialization(self):
-        """Проверка создания экземпляра Category."""
-        products = [
-            Product("P1", "Desc 1", 100.0, 2),
-            Product("P2", "Desc 2", 200.0, 1)
-        ]
-        category = Category("Electronics", "Gadgets and stuff", products)
+    def setup_method(self):
+        """Подготовка тестовых данных перед каждым тестом"""
+        self.product1 = Product("Phone 1", "Desc 1", 1000.0, 5)
+        self.product2 = Product("Phone 2", "Desc 2", 2000.0, 3)
+        self.category = Category("Test Category", "Test Desc", [self.product1])
 
-        assert category.name == "Electronics"
-        assert category.description == "Gadgets and stuff"
-        assert len(category.products) == 2
-        assert category.products[0].name == "P1"
-        assert category.products[1].name == "P2"
+    def test_category_creation(self):
+        """Тест создания категории"""
+        assert self.category.name == "Test Category"
+        assert len(self.category._Category__products) == 1
 
-    def test_category_count_increments(self):
-        """Счётчик category_count увеличивается при создании новой Category."""
+    def test_products_getter_format(self):
+        """Тест формата вывода геттера products"""
+        result = self.category.products
+        expected_line = f"{self.product1.name}, {self.product1.price} руб. Остаток: {self.product1.quantity} шт.\n"
+        assert expected_line in result
+
+    def test_add_product(self):
+        """Тест добавления продукта в категорию"""
+        initial_product_count = Product.product_count
+        initial_products_count = len(self.category._Category__products)
+        self.category.add_product(self.product2)
+        assert len(self.category._Category__products) == initial_products_count + 1
+        assert Product.product_count == initial_product_count + 1
+
+    def test_category_count_increment(self):
+        """Тест увеличения счётчика категорий"""
         initial_count = Category.category_count
-
-        Category("Toys", "For kids", [])
-
+        Category("New Cat", "Desc", [])
         assert Category.category_count == initial_count + 1
-
-
-
-
-
