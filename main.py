@@ -22,6 +22,12 @@ class Product:
         else:
             print("Цена не должна быть нулевая или отрицательная")
 
+    def __add__(self, other):
+        return self.price * self.quantity + other.price * other.quantity
+
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
     @classmethod
     def new_product(cls, product_data: dict) -> Product:
         """Класс‑метод для создания продукта из словаря"""
@@ -46,6 +52,10 @@ class Category:
         # Увеличиваем общий счетчик продуктов на кол-ло переданных продуктов
         Category.product_count += len(products)
 
+    @property
+    def products(self):
+        return self.__products
+
     def __str__(self):
         product_str = ""
         for product in self.__products:
@@ -57,6 +67,10 @@ class Category:
         Прибавляет 1 к счётчику продуктов класса Product."""
         self.__products.append(product)
         Category.product_count += 1  # Увеличиваем общий счётчик продуктов
+        Product.product_count += 1
+
+    def total_cost(self):
+        return sum(p.price * p.quantity for p in self.products)
 
 
 
@@ -100,8 +114,10 @@ if __name__ == "__main__":
 
     print(str(category1))
 
-    print(category1.products)
+    print(category1)
 
     print(product1 + product2)
     print(product1 + product3)
     print(product2 + product3)
+
+    print ("Общая стоимость категорий:", category1.total_cost())
