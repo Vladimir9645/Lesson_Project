@@ -46,11 +46,7 @@ class Category:
         # Увеличиваем общий счетчик продуктов на кол-ло переданных продуктов
         Category.product_count += len(products)
 
-    @property
-    def products(self) -> str:
-        """Геттер для приватного атрибута products.
-        Возвращает строку со всеми продуктами по шаблону:
-        'Название продукта, X руб. Остаток: X шт.\n'"""
+    def __str__(self):
         product_str = ""
         for product in self.__products:
             product_str += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
@@ -84,11 +80,16 @@ if __name__ == "__main__":
         31000.0, 14
     )
 
-    product4 = Product(
-        "55\" QLED 4K",
-        "Фоновая подсветка",
-        123000.0, 7
+    category1 = Category(
+        "Смартфоны",
+        "Смартфоны, как средство не только коммуникации, "
+        "но и получения дополнительных функций для удобства жизни",
+        [product1, product2, product3]
     )
+
+    print(str(product1))
+    print(str(product2))
+    print(str(product3))
 
     category1 = Category(
         "Смартфоны",
@@ -97,28 +98,10 @@ if __name__ == "__main__":
         [product1, product2, product3]
     )
 
+    print(str(category1))
+
     print(category1.products)
-    category1.add_product(product4)
-    print(category1.products)
-    print(Category.product_count)
 
-    new_product = Product.new_product(
-        {"name": "Samsung Galaxy S23 Ultra",
-         "description": "256GB, Серый цвет, 200MP камера",
-         "price": 180000.0,
-         "quantity": 5}
-    )
-
-    print(new_product.name)
-    print(new_product.description)
-    print(new_product.price)
-    print(new_product.quantity)
-
-    new_product.price = 800
-    print(new_product.price)
-
-    new_product.price = -100  # Выведет сообщение об ошибке
-    print(new_product.price)
-    new_product.price = 0  # Выведет сообщение об ошибке
-    print(new_product.price)
-
+    print(product1 + product2)
+    print(product1 + product3)
+    print(product2 + product3)
