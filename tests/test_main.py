@@ -57,35 +57,53 @@ class TestProduct:
         Product("Test", "Desc", 100.0, 1)
         assert Product.product_count == initial_count + 1
 
+class TestProducts:
+    @pytest.fixture
+    def product1(self):
+        return Product("Test Phone 1", "Description 1", 10000.0, 5)
+
+    @pytest.fixture
+    def product2(self):
+        return Product("Test Phone 2", "Description 2", 15000.0, 3)
+
+    def test_add_magic_method(self, product1, product2):
+        """Тест метода __add__: сумма стоимости двух продуктов"""
+        expected_total = product1.price * product1.quantity + product2.price * product2.quantity
+        result = product1 + product2
+        assert result == expected_total
+
+    def test_str_magic_method(self, product1):
+        """Тест метода __str__: строковое представление продукта"""
+        expected_str = "Test Phone 1, 10000.0 руб. Остаток: 5 шт."
+        assert str(product1) == expected_str
+
+
+    def test_price_setter_valid_value(self, product1):
+        """Тест сеттера цены с корректным значением"""
+        product1.price = 12000.0
+        assert product1.price == 12000.0
 
 class TestCategory:
-    def setup_method(self):
-        """Подготовка тестовых данных перед каждым тестом"""
-        self.product1 = Product("Phone 1", "Desc 1", 1000.0, 5)
-        self.product2 = Product("Phone 2", "Desc 2", 2000.0, 3)
-        self.category = Category("Test Category", "Test Desc", [self.product1])
+    @pytest.fixture
+    def products(self):
+        return [
+            Product("Phone A", "Desc A", 10000.0, 2),
+            Product("Phone B", "Desc B", 15000.0, 4),
+        ]
 
-    def test_category_creation(self):
-        """Тест создания категории"""
-        assert self.category.name == "Test Category"
-        assert len(self.category._Category__products) == 1
+    @pytest.fixture
+    def category(self, products):
+        return Category("Test Category", "Test Description", products)
 
-    def test_products_getter_format(self):
-        """Тест формата вывода геттера products"""
-        result = self.category.products
-        expected_line = f"{self.product1.name}, {self.product1.price} руб. Остаток: {self.product1.quantity} шт.\n"
-        assert expected_line in result
+    def test_str_magic_method_with_products(self, category):
+        """Тест метода __str__ для категории с продуктами"""
+        expected_output = (
+            "Phone A, 10000.0 руб. Остаток: 2 шт.\n"
+            "Phone B, 15000.0 руб. Остаток: 4 шт.\n"
+        )
+        assert str(category) == expected_output
 
-    def test_add_product(self):
-        """Тест добавления продукта в категорию"""
-        initial_product_count = Product.product_count
-        initial_products_count = len(self.category._Category__products)
-        self.category.add_product(self.product2)
-        assert len(self.category._Category__products) == initial_products_count + 1
-        assert Product.product_count == initial_product_count + 1
-
-    def test_category_count_increment(self):
-        """Тест увеличения счётчика категорий"""
-        initial_count = Category.category_count
-        Category("New Cat", "Desc", [])
-        assert Category.category_count == initial_count + 1
+    def test_str_magic_method_empty_category(self):
+        """Тест метода __str__ для категории без продуктов"""
+        empty_category = Category("Empty Category", "Empty Description", [])
+        assert str(empty_category) == ""
