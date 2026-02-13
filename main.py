@@ -22,6 +22,12 @@ class Product:
         else:
             print("Цена не должна быть нулевая или отрицательная")
 
+    def __add__(self, other):
+        return self.price * self.quantity + other.price * other.quantity
+
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
     @classmethod
     def new_product(cls, product_data: dict) -> Product:
         """Класс‑метод для создания продукта из словаря"""
@@ -47,20 +53,21 @@ class Category:
         Category.product_count += len(products)
 
     @property
-    def products(self) -> str:
-        """Геттер для приватного атрибута products.
-        Возвращает строку со всеми продуктами по шаблону:
-        'Название продукта, X руб. Остаток: X шт.\n'"""
-        product_str = ""
-        for product in self.__products:
-            product_str += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
-        return product_str
+    def products(self):
+        return self.__products
+
+    def __str__(self):
+        return f"{self.name}, количество продуктов: {len(self.__products)} шт."
 
     def add_product(self, product: Product):
         """Метод для добавления продукта в приватный атрибут __products.
         Прибавляет 1 к счётчику продуктов класса Product."""
         self.__products.append(product)
         Category.product_count += 1  # Увеличиваем общий счётчик продуктов
+        Product.product_count += 1
+
+    def total_cost(self):
+        return sum(p.price * p.quantity for p in self.products)
 
 
 
@@ -84,12 +91,6 @@ if __name__ == "__main__":
         31000.0, 14
     )
 
-    product4 = Product(
-        "55\" QLED 4K",
-        "Фоновая подсветка",
-        123000.0, 7
-    )
-
     category1 = Category(
         "Смартфоны",
         "Смартфоны, как средство не только коммуникации, "
@@ -97,28 +98,14 @@ if __name__ == "__main__":
         [product1, product2, product3]
     )
 
-    print(category1.products)
-    category1.add_product(product4)
-    print(category1.products)
-    print(Category.product_count)
+    print(str(product1))
+    print(str(product2))
+    print(str(product3))
+    print()
+    print(str(category1))
 
-    new_product = Product.new_product(
-        {"name": "Samsung Galaxy S23 Ultra",
-         "description": "256GB, Серый цвет, 200MP камера",
-         "price": 180000.0,
-         "quantity": 5}
-    )
+    print(product1 + product2)
+    print(product1 + product3)
+    print(product2 + product3)
 
-    print(new_product.name)
-    print(new_product.description)
-    print(new_product.price)
-    print(new_product.quantity)
-
-    new_product.price = 800
-    print(new_product.price)
-
-    new_product.price = -100  # Выведет сообщение об ошибке
-    print(new_product.price)
-    new_product.price = 0  # Выведет сообщение об ошибке
-    print(new_product.price)
-
+    print ("Общая стоимость категорий:", category1.total_cost())
