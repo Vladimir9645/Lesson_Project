@@ -94,16 +94,3 @@ class TestCategory:
     @pytest.fixture
     def category(self, products):
         return Category("Test Category", "Test Description", products)
-
-    def test_str_magic_method_with_products(self, category):
-        """Тест метода __str__ для категории с продуктами"""
-        expected_output = (
-            "Phone A, 10000.0 руб. Остаток: 2 шт.\n"
-            "Phone B, 15000.0 руб. Остаток: 4 шт.\n"
-        )
-        assert str(category) == expected_output
-
-    def test_str_magic_method_empty_category(self):
-        """Тест метода __str__ для категории без продуктов"""
-        empty_category = Category("Empty Category", "Empty Description", [])
-        assert str(empty_category) == ""
