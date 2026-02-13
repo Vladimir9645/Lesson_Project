@@ -57,10 +57,7 @@ class Category:
         return self.__products
 
     def __str__(self):
-        product_str = ""
-        for product in self.__products:
-            product_str += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
-        return product_str
+        return f"{self.name}, количество продуктов: {len(self.__products)} шт."
 
     def add_product(self, product: Product):
         """Метод для добавления продукта в приватный атрибут __products.
@@ -104,17 +101,8 @@ if __name__ == "__main__":
     print(str(product1))
     print(str(product2))
     print(str(product3))
-
-    category1 = Category(
-        "Смартфоны",
-        "Смартфоны, как средство не только коммуникации, "
-        "но и получения дополнительных функций для удобства жизни",
-        [product1, product2, product3]
-    )
-
+    print()
     print(str(category1))
-
-    print(category1)
 
     print(product1 + product2)
     print(product1 + product3)
