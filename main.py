@@ -1,111 +1,173 @@
 class Product:
-    product_count = 0  # Атрибут класса: общее число продуктов
-
-    def __init__(self, name: str, description: str, price: float, quantity: int):
+    def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
-        self.__price = price  # Приватный атрибут цены
+        self.price = price
         self.quantity = quantity
-        # Увеличиваем счётчик при создании объекта
-        Product.product_count += 1
-
-    @property
-    def price(self) -> float:
-        """Геттер для приватного атрибута цены"""
-        return self.__price
-
-    @price.setter
-    def price(self, value: float):
-        """Сеттер для атрибута цены с проверкой на положительное значение"""
-        if value > 0:
-            self.__price = value
-        else:
-            print("Цена не должна быть нулевая или отрицательная")
 
     def __add__(self, other):
-        return self.price * self.quantity + other.price * other.quantity
+        if type(self) != type(other):
+            raise TypeError("Нельзя складывать товары разных типов")
+        return self._create_product(other)
 
-    def __str__(self):
-        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
-
-    @classmethod
-    def new_product(cls, product_data: dict) -> Product:
-        """Класс‑метод для создания продукта из словаря"""
-        return cls(
-            name=product_data["name"],
-            description=product_data["description"],
-            price=product_data["price"],
-            quantity=product_data["quantity"]
+    def _create_product(self, other):
+        """Базовый метод для создания объединённого продукта — переопределяется в наследниках"""
+        return self.__class__(
+            f"{self.name} + {other.name}",
+            f"Объединённый товар: {self.description} и {other.description}",
+            self.price + other.price,
+            self.quantity + other.quantity
         )
 
 
-class Category:
-    category_count = 0  # Атрибут класса: общее число категорий
-    product_count = 0  # Атрибут класса: счётчик продуктов во всех категориях
 
-    def __init__(self, name: str, description: str, products: list[Product]):
+class Smartphone(Product):
+    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+    def _create_product(self, other):
+        return Smartphone(
+            f"{self.name} + {other.name}",
+            f"Объединённый смартфон: {self.description} и {other.description}",
+            self.price + other.price,
+            self.quantity + other.quantity,
+            (self.efficiency + other.efficiency) / 2,  # среднее значение производительности
+            f"{self.model} + {other.model}",  # объединение моделей
+            self.memory + other.memory,  # суммарный объём памяти
+            f"{self.color} + {other.color}"  # объединение цветов
+        )
+
+
+
+class LawnGrass(Product):
+    def __init__(self, name, description, price, quantity, country, germination_period, color):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
+
+    def _create_product(self, other):
+        return LawnGrass(
+            f"{self.name} + {other.name}",
+            f"Объединённая газонная трава: {self.description} и {other.description}",
+            self.price + other.price,
+            self.quantity + other.quantity,
+            f"{self.country} + {other.country}",  # объединение стран-производителей
+            f"Среднее: {self.germination_period} и {other.germination_period}",  # усреднение сроков прорастания
+            f"{self.color} + {other.color}"  # объединение цветов
+        )
+
+
+
+class Category:
+    product_count = 0
+
+    def __init__(self, name, description, products=None):
         self.name = name
         self.description = description
-        self.__products = products  # Приватный атрибут списка товаров
-        # Увеличиваем счётчик при создании объекта
-        Category.category_count += 1
-        # Увеличиваем общий счетчик продуктов на кол-ло переданных продуктов
-        Category.product_count += len(products)
+        self._products = []
+        if products:
+            for product in products:
+                self.add_product(product)
 
     @property
     def products(self):
-        return self.__products
+        return self._products
 
-    def __str__(self):
-        return f"{self.name}, количество продуктов: {len(self.__products)} шт."
-
-    def add_product(self, product: Product):
-        """Метод для добавления продукта в приватный атрибут __products.
-        Прибавляет 1 к счётчику продуктов класса Product."""
-        self.__products.append(product)
-        Category.product_count += 1  # Увеличиваем общий счётчик продуктов
-        Product.product_count += 1
-
-    def total_cost(self):
-        return sum(p.price * p.quantity for p in self.products)
+    def add_product(self, product):
+        if not isinstance(product, Product):
+            raise TypeError("Можно добавлять только объекты класса Product или его наследников")
+        self._products.append(product)
+        Category.product_count += 1
 
 
 
-if __name__ == "__main__":
-    # Создаём продукты
-    product1 = Product(
-        "Samsung Galaxy S23 Ultra",
-        "256GB, Серый цвет, 200MP камера",
-        180000.0, 5
-    )
+if __name__ == '__main__':
+    smartphone1 = Smartphone("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5,
+                         "S23 Ultra", 256, "Серый")
+    smartphone2 = Smartphone("Iphone 15", "512GB, Gray space", 210000.0, 8, 98.2, "15", 512, "Gray space")
+    smartphone3 = Smartphone("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14, 90.3, "Note 11", 1024, "Синий")
 
-    product2 = Product(
-        "Iphone 15",
-        "512GB, Gray space",
-        210000.0, 8
-    )
+    print(smartphone1.name)
+    print(smartphone1.description)
+    print(smartphone1.price)
+    print(smartphone1.quantity)
+    print(smartphone1.efficiency)
+    print(smartphone1.model)
+    print(smartphone1.memory)
+    print(smartphone1.color)
 
-    product3 = Product(
-        "Xiaomi Redmi Note 11",
-        "1024GB, Синий",
-        31000.0, 14
-    )
+    print(smartphone2.name)
+    print(smartphone2.description)
+    print(smartphone2.price)
+    print(smartphone2.quantity)
+    print(smartphone2.efficiency)
+    print(smartphone2.model)
+    print(smartphone2.memory)
+    print(smartphone2.color)
 
-    category1 = Category(
-        "Смартфоны",
-        "Смартфоны, как средство не только коммуникации, "
-        "но и получения дополнительных функций для удобства жизни",
-        [product1, product2, product3]
-    )
+    print(smartphone3.name)
+    print(smartphone3.description)
+    print(smartphone3.price)
+    print(smartphone3.quantity)
+    print(smartphone3.efficiency)
+    print(smartphone3.model)
+    print(smartphone3.memory)
+    print(smartphone3.color)
 
-    print(str(product1))
-    print(str(product2))
-    print(str(product3))
-    print()
-    print(str(category1))
+    grass1 = LawnGrass("Газонная трава", "Элитная трава для газона", 500.0, 20, "Россия", "7 дней", "Зеленый")
+    grass2 = LawnGrass("Газонная трава 2", "Выносливая трава", 450.0, 15, "США", "5 дней", "Темно-зеленый")
 
-    print(product1 + product2)
-    print(product1 + product3)
-    print(product2 + product3)
+    print(grass1.name)
+    print(grass1.description)
+    print(grass1.price)
+    print(grass1.quantity)
+    print(grass1.country)
+    print(grass1.germination_period)
+    print(grass1.color)
 
-    print ("Общая стоимость категорий:", category1.total_cost())
+    print(grass2.name)
+    print(grass2.description)
+    print(grass2.price)
+    print(grass2.quantity)
+    print(grass2.country)
+    print(grass2.germination_period)
+    print(grass2.color)
+
+    smartphone_sum = smartphone1 + smartphone2
+    print(smartphone_sum.name)
+    print(smartphone_sum.price)
+    print(smartphone_sum.quantity)
+
+    grass_sum = grass1 + grass2
+    print(grass_sum.name)
+    print(grass_sum.price)
+    print(grass_sum.quantity)
+
+    try:
+        invalid_sum = smartphone1 + grass1
+    except TypeError:
+        print("Возникла ошибка TypeError при попытке сложения")
+    else:
+        print("Не возникла ошибка TypeError при попытке сложения")
+
+    category_smartphones = Category("Смартфоны", "Высокотехнологичные смартфоны", [smartphone1, smartphone2])
+    category_grass = Category("Газонная трава", "Различные виды газонной травы", [grass1, grass2])
+
+    category_smartphones.add_product(smartphone3)
+
+    for product in category_smartphones.products:
+        print(product.name)
+
+    print(Category.product_count)
+
+    try:
+        category_smartphones.add_product("Not a product")
+    except TypeError:
+        print("Возникла ошибка TypeError при добавлении не продукта")
+    else:
+        print("Не возникла ошибка TypeError при добавлении не продукта")
