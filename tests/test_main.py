@@ -1,5 +1,7 @@
 import pytest
-from main import Product, Smartphone, LawnGrass, Category
+from src.Smartphone import Smartphone
+from src.Lawn_Grass import LawnGrass
+from src.Category import Category
 
 
 @pytest.fixture
