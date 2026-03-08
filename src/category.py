@@ -1,3 +1,6 @@
+from typing import List, Optional
+
+
 class Category:
     category_count = 0
     product_count = 0
@@ -8,7 +11,7 @@ class Category:
         cls.category_count = 0
         cls.product_count = 0
 
-    def __init__(self, name: str, description: str, products: list = None):
+    def __init__(self, name: str, description: str, products: Optional[List] = None):
         self.name = name
         self.description = description
         self.__products = products if products else []

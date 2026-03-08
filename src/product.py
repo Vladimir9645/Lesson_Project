@@ -1,6 +1,7 @@
 from .base_product import BaseProduct
 from .mixins import CreationLoggerMixin
 
+
 class Product(CreationLoggerMixin, BaseProduct):
     """Промежуточный класс продукта с логированием создания."""
 

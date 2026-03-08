@@ -1,4 +1,4 @@
-from .smartphone import Смартфон
 from .lawn_grass import ТраваГазонная
+from .smartphone import Смартфон
 
-__all__ = ['Смартфон', 'ТраваГазонная']
+__all__ = ["Смартфон", "ТраваГазонная"]
