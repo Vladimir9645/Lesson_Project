@@ -1,12 +1,8 @@
-from .base_product import BaseProduct
-from .mixins import CreationLoggerMixin
-
-
-class Product(CreationLoggerMixin, BaseProduct):
-    """Промежуточный класс продукта с логированием создания."""
-
-    def __init__(self, name: str, description: str, price: float, quantity: int):
-        super().__init__(name, description, price, quantity)
-
-    def get_description(self) -> str:
-        return f"{self.name} - {self.description}, цена: {self.price} руб., количество: {self.quantity} шт."
+class Product:
+    def __init__(self, name, description, price, quantity):
+        self.name = name
+        self.description = description
+        self.price = price
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+        self.quantity = quantity

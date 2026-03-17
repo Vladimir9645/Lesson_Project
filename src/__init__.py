@@ -1,5 +1,4 @@
-from .category import Category
 from .product import Product
-from .products import Смартфон, ТраваГазонная
+from .category import Category
 
-__all__ = ["Product", "Category", "Смартфон", "ТраваГазонная"]
+__all__ = ['Product', 'Category']

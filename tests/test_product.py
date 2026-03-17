@@ -1,35 +1,31 @@
 import pytest
-from src.product import Product
+from src import Product
 
 class TestProduct:
-    def test_product_creation(self, capsys):
-        """Проверяет создание продукта и логирование."""
-        product = Product("Test Product", "Description", 100.0, 5)
-        captured = capsys.readouterr()
-
-        # Проверяем логирование
-        assert "Создан объект класса Product" in captured.out
-
-        # Проверяем атрибуты
-        assert product.name == "Test Product"
-        assert product.description == "Description"
-        assert product.price == 100.0
+    def test_product_creation_valid(self):
+        """Тест создания продукта с корректными данными"""
+        product = Product("Смартфон", "Описание", 1000.0, 5)
+        assert product.name == "Смартфон"
+        assert product.description == "Описание"
+        assert product.price == 1000.0
         assert product.quantity == 5
 
-    def test_get_description(self):
-        """Проверяет метод get_description."""
-        product = Product("Test Product", "Description", 100.0, 5)
-        description = product.get_description()
-        expected = "Test Product - Description, цена: 100.0 руб., количество: 5 шт."
-        assert description == expected
+    def test_product_creation_zero_quantity(self):
+        """Тест создания продукта с нулевым количеством — должна выброситься ошибка"""
+        with pytest.raises(ValueError) as excinfo:
+            Product("Бракованный товар", "Неверное количество", 1000.0, 0)
+        assert str(excinfo.value) == "Товар с нулевым количеством не может быть добавлен"
 
-    def test_display_info(self, capsys):
-        """Проверяет метод display_info."""
-        product = Product("Test Product", "Description", 100.0, 5)
-        product.display_info()
-        captured = capsys.readouterr()
+    def test_product_creation_negative_quantity(self):
+        """Тест создания продукта с отрицательным количеством"""
+        # По заданию проверка только на ноль, но проверим поведение
+        product = Product("Товар", "Описание", 500.0, -1)
+        assert product.quantity == -1
 
-        assert "Товар: Test Product" in captured.out
-        assert "Описание: Description" in captured.out
-        assert "Цена: 100.0 руб." in captured.out
-        assert "Количество: 5 шт." in captured.out
+    def test_product_attributes_access(self):
+        """Тест доступа к атрибутам продукта"""
+        product = Product("Ноутбук", "Мощный ноутбук", 50000.0, 3)
+        assert hasattr(product, 'name')
+        assert hasattr(product, 'description')
+        assert hasattr(product, 'price')
+        assert hasattr(product, 'quantity')
