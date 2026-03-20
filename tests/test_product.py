@@ -33,3 +33,13 @@ class TestProduct:
         assert "Описание: Description" in captured.out
         assert "Цена: 100.0 руб." in captured.out
         assert "Количество: 5 шт." in captured.out
+
+    def test_product_with_zero_quantity_raises_value_error(self):
+        """Тест: создание продукта с нулевым количеством вызывает ValueError"""
+        with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+            Product("Бракованный товар", "Неверное количество", 1000.0, 0)
+
+    def test_product_with_negative_quantity_raises_value_error(self):
+        """Тест: создание продукта с отрицательным количеством вызывает ValueError"""
+        with pytest.raises(ValueError, match="Товар с отрицательным количеством не может быть добавлен"):
+            Product("Телефон", "Описание", 1000.0, -1)

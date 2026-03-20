@@ -23,3 +23,4 @@ class TestBaseProduct:
         """Проверяет, что get_description — абстрактный метод."""
         with pytest.raises(TypeError):
             BaseProduct("Test", "Desc", 100, 5)
+            

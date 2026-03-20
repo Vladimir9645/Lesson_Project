@@ -54,3 +54,8 @@ class TestCategory:
         """Проверяет работу метода __len__."""
         category = Category("Test", "Desc", setup_products)
         assert len(category) == 2
+
+    def test_middle_price_empty_category(self):
+        """Тест средней цены для пустой категории (как в примере кода)"""
+        category_empty = Category("Пустая категория", "Категория без продуктов", [])
+        assert category_empty.middle_price() == 0.0
