@@ -8,7 +8,7 @@ class Category:
         cls.category_count = 0
         cls.product_count = 0
 
-    def __init__(self, name: str, description: str, products: list = None):
+    def __init__(self, name: str, description: str, products: list = []):
         self.name = name
         self.description = description
         self.__products = products if products else []
@@ -35,7 +35,7 @@ class Category:
         return len(self.__products)
 
     def middle_price(self) -> float:
-        """ Подсчет срдней цены товаров """
+        """Подсчет срдней цены товаров"""
         # Проверяем, есть ли товары в категории
         if not self.__products:
             return 0.0

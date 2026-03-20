@@ -1,6 +1,7 @@
 from .base_product import BaseProduct
 from .mixins import CreationLoggerMixin
 
+
 class Product(CreationLoggerMixin, BaseProduct):
     """Промежуточный класс продукта с логированием создания."""
 
@@ -10,10 +11,12 @@ class Product(CreationLoggerMixin, BaseProduct):
             if quantity == 0:
                 raise ValueError("Товар с нулевым количеством не может быть добавлен")
             else:  # quantity < 0
-                raise ValueError("Товар с отрицательным количеством не может быть добавлен")
+                raise ValueError(
+                    "Товар с отрицательным количеством не может быть добавлен"
+                )
 
         # Если првоверка пройдена, вызываем инициализатор родительского класса
-        super(). __init__(name, description, price, quantity)
+        super().__init__(name, description, price, quantity)
 
     def get_description(self) -> str:
         return f"{self.name} - {self.description}, цена: {self.price} руб., количество: {self.quantity} шт."

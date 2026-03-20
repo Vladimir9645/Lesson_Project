@@ -1,7 +1,7 @@
 class CreationLoggerMixin:
     def __init__(self, *args, **kwargs):
         # Проверяем, есть ли у родителя __init__, который принимает аргументы
-        if hasattr(super(), '__init__') and callable(super().__init__):
+        if hasattr(super(), "__init__") and callable(super().__init__):
             try:
                 super().__init__(*args, **kwargs)
             except TypeError:
@@ -12,4 +12,6 @@ class CreationLoggerMixin:
             pass
 
         print(f"Создан объект класса {self.__class__.__name__}")
-        print(f"Параметры: name='{self.name}', price={self.price}, quantity={self.quantity}")
+        print(
+            f"Параметры: name='{self.name}', price={self.price}, quantity={self.quantity}"
+        )
