@@ -6,15 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ae5dbeb4-5058-4c10-a513-c6e9af736af0" name="Changes" comment="new">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/base_product.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/base_product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/category.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/category.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mixins.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/mixins.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/product.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/product.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/products/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/products/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/products/lawn_grass.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/products/lawn_grass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/products/smartphone.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/products/smartphone.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,10 +58,11 @@
     "Python.BaseProduct.executor": "Run",
     "Python.Practic.executor": "Run",
     "Python.main.executor": "Run",
+    "Python.product.executor": "Run",
     "Python.smartphone.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "#4 on main",
+    "git-widget-placeholder": "#5 on main",
     "settings.editor.selected.configurable": "configurable.group.appearance"
   }
 }]]></component>
@@ -220,7 +213,23 @@
       <option name="project" value="LOCAL" />
       <updated>1772975441421</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="new">
+      <option name="closed" value="true" />
+      <created>1773742609951</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1773742609951</updated>
+    </task>
+    <task id="LOCAL-00014" summary="new">
+      <option name="closed" value="true" />
+      <created>1774017376415</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1774017376415</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -237,16 +246,5 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="new" />
     <option name="LAST_COMMIT_MESSAGE" value="new" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/category.py</url>
-          <line>34</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
